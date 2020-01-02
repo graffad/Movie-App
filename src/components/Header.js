@@ -41,39 +41,80 @@ export function Header() {
     Ratings: [],
   });
   const [typeSearch, setTypeSearch] = useState('movie');
+  const [sortValue, setSortValue] = useState('Title');
   let url = `http://www.omdbapi.com/?s=${searchValue}&type=${typeSearch}&apikey=5b0729fd&page=${searchPage}`;
 
 
   useEffect(() => {
-
     fetch(url)
       .then(response => response.json())
       .then(result => {
         if (result.Response === 'True') {
           // let newArr = stateJson.Search.concat(result.Search)
+          let arrSorted = [];
+          if (sortValue === 'Title') {
+            arrSorted = result.Search.sort((prev, next) => {
+              if (prev.Title < next.Title) return -1;
+              if (prev.Title < next.Title) return 1;
+            });
+          }
+          if (sortValue === 'yearNewToOld') {
+            let arrNum = result.Search.map(function (item) {
+              item.Year = parseInt(item.Year, 10); //строки в числа
+              return item;
+            });
+            arrSorted = arrNum.sort((prev, next) => next.Year - prev.Year);
+          }
+          if (sortValue === 'yearOldToNew') {
+            let arrNum = result.Search.map(function (item) {
+              item.Year = parseInt(item.Year, 10); //строки в числа
+              return item;
+            });
+            arrSorted = arrNum.sort((prev, next) => prev.Year - next.Year);
+          }
           setStateJson({
-            Search: result.Search,
+            Search: arrSorted,
             totalResults: result.totalResults,
           });
-          setLoading({ Loading: '' });
+          setLoading({ Loading: `Total results of (${searchValue}): ${result.totalResults}` });
         } else {
           setStateJson({
             Search: [],
-
           });
           setLoading({ Loading: `${result.Error}` });
         }
 
 
       });
-  }, [searchValue,typeSearch]);
+  }, [searchValue, typeSearch, sortValue]);
 
   useEffect(() => {
     fetch(url)
       .then(response => response.json())
       .then(result => {
         if (result.Response === 'True') {
-          let newArr = stateJson.Search.concat(result.Search);
+          let arrSorted = [];
+          if (sortValue === 'Title') {
+            arrSorted = result.Search.sort((prev, next) => {
+              if (prev.Title < next.Title) return -1;
+              if (prev.Title < next.Title) return 1;
+            });
+          }
+          if (sortValue === 'yearNewToOld') {
+            let arrNum = result.Search.map(function (item) {
+              item.Year = parseInt(item.Year, 10); //строки в числа
+              return item;
+            });
+            arrSorted = arrNum.sort((prev, next) => next.Year - prev.Year);
+          }
+          if (sortValue === 'yearOldToNew') {
+            let arrNum = result.Search.map(function (item) {
+              item.Year = parseInt(item.Year, 10); //строки в числа
+              return item;
+            });
+            arrSorted = arrNum.sort((prev, next) => prev.Year - next.Year);
+          }
+          let newArr = stateJson.Search.concat(arrSorted);
           setStateJson({
             Search: newArr,
             totalResults: result.totalResults,
@@ -91,7 +132,6 @@ export function Header() {
       });
   }, [counter]);
 
-
   function fetchInfo(filmID) {
     fetch(`http://www.omdbapi.com/?i=${filmID}&apikey=5b0729fd`)
       .then(response => response.json())
@@ -99,9 +139,7 @@ export function Header() {
 
   }
 
-
   const onEnter = (event) => {
-
     if (event.key === 'Enter') {
       setLoading({ Loading: 'Loading..' });
       setSearchPage(1); //ставим первую страницу
@@ -111,10 +149,8 @@ export function Header() {
       event.target.value = '';
       event.target.blur();
     }
-
   };
 
-  // onChange={onChange}
   return (
     <div>
       <input type="text" onKeyPress={onEnter}/>
@@ -126,40 +162,26 @@ export function Header() {
              onChange={event => setTypeSearch(event.target.value)}
       />
       <label htmlFor="typeTvShow">Tv show</label>
-      <button onClick={()=>{
-        let arrSorted = stateJson.Search.sort((prev, next) => {
-          if ( prev.Title < next.Title ) return -1;
-          if ( prev.Title < next.Title ) return 1;
-        });
-        console.log(arrSorted)
-      }}>sortTitle</button>
-      <button onClick={()=>{
-        let arrNum = stateJson.Search.map(function (item) {
-          item.Year = parseInt(item.Year,10)
-          return item
-        })
 
-        arrNum.sort((prev, next) =>  next.Year - prev.Year);
-        console.log(arrNum)
-      }}>sortYear</button>
+      <select name="" id="" onChange={event => setSortValue(event.target.value)}>
+        <option defaultValue="Title">Title</option>
+        <option value="yearNewToOld">Year↓</option>
+        <option value="yearOldToNew">Year↑</option>
+      </select>
 
-      <p>{loadingData.Loading}</p>
+      <h3>{loadingData.Loading}</h3>
       <ul>
-
         {stateJson.Search.map(item => (
           <li key={item.imdbID}>{item.Title}{item.Year}
             <button onClick={() => fetchInfo(item.imdbID)}>more</button>
             <div>
               {/*<img src={item.Poster} alt=""/>*/}
             </div>
-
-
           </li>
         ))}
 
         <button onClick={() => {
           setLoading({ Loading: 'Loading..' });
-
           setSearchPage(searchPage + 1);
           setCounter(counter + 1);
           // fetchMovie();
