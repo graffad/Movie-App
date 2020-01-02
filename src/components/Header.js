@@ -113,7 +113,6 @@ export function Header() {
     }
 
   };
-console.log(typeSearch)
 
   // onChange={onChange}
   return (
@@ -127,6 +126,22 @@ console.log(typeSearch)
              onChange={event => setTypeSearch(event.target.value)}
       />
       <label htmlFor="typeTvShow">Tv show</label>
+      <button onClick={()=>{
+        let arrSorted = stateJson.Search.sort((prev, next) => {
+          if ( prev.Title < next.Title ) return -1;
+          if ( prev.Title < next.Title ) return 1;
+        });
+        console.log(arrSorted)
+      }}>sortTitle</button>
+      <button onClick={()=>{
+        let arrNum = stateJson.Search.map(function (item) {
+          item.Year = parseInt(item.Year,10)
+          return item
+        })
+
+        arrNum.sort((prev, next) =>  next.Year - prev.Year);
+        console.log(arrNum)
+      }}>sortYear</button>
 
       <p>{loadingData.Loading}</p>
       <ul>
