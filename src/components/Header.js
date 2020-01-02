@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Info } from './Info';
 
 
 //apikey=5b0729fd
 export function Header() {
   const [loadingData, setLoading] = useState({
-    Loading: ""
-  } ); //PRoblem
+    Loading: ''
+  }); //PRoblem
   const [searchPage, setSearchPage] = useState(1);
   const [counter, setCounter] = useState(0);
   const [searchValue, setSearchValue] = useState('');
   const [stateJson, setStateJson] = useState({
     Search: [],
   });
-  const [movie, setMovie] = useState({
+  const [movieInfo, setMovie] = useState({
     Title: '',
     Year: '',
     Rated: '',
@@ -40,60 +40,56 @@ export function Header() {
     Response: '',
     Ratings: [],
   });
+  const [typeSearch, setTypeSearch] = useState('movie');
+  let url = `http://www.omdbapi.com/?s=${searchValue}&type=${typeSearch}&apikey=5b0729fd&page=${searchPage}`;
 
-  useEffect(()=>{
 
-    fetch(`http://www.omdbapi.com/?s=${searchValue}&apikey=5b0729fd&page=${searchPage}`)
+  useEffect(() => {
+
+    fetch(url)
       .then(response => response.json())
       .then(result => {
-        if(result.Response === "True"){
+        if (result.Response === 'True') {
           // let newArr = stateJson.Search.concat(result.Search)
           setStateJson({
             Search: result.Search,
             totalResults: result.totalResults,
           });
-          setLoading({Loading: ""})
-        }else {
+          setLoading({ Loading: '' });
+        } else {
           setStateJson({
             Search: [],
 
           });
-          setLoading({Loading: `${result.Error}`})
+          setLoading({ Loading: `${result.Error}` });
         }
 
 
-
       });
-  },[searchValue])
+  }, [searchValue,typeSearch]);
 
-  console.log(loadingData)
-  //при изменении страницы
-
-  useEffect(()=>{
-    fetch(`http://www.omdbapi.com/?s=${searchValue}&apikey=5b0729fd&page=${searchPage}`)
+  useEffect(() => {
+    fetch(url)
       .then(response => response.json())
       .then(result => {
-        if(result.Response === "True"){
-          let newArr = stateJson.Search.concat(result.Search)
+        if (result.Response === 'True') {
+          let newArr = stateJson.Search.concat(result.Search);
           setStateJson({
             Search: newArr,
             totalResults: result.totalResults,
           });
-          setLoading({Loading: ""})
-        }else {
+          setLoading({ Loading: '' });
+        } else {
           setStateJson({
             Search: [],
 
           });
-          setLoading({Loading: `${result.Error}`})
+          setLoading({ Loading: `${result.Error}` });
         }
 
 
-
       });
-  },[counter])
-
-
+  }, [counter]);
 
 
   function fetchInfo(filmID) {
@@ -107,9 +103,9 @@ export function Header() {
   const onEnter = (event) => {
 
     if (event.key === 'Enter') {
-      setLoading({Loading: "Loading.."})
+      setLoading({ Loading: 'Loading..' });
       setSearchPage(1); //ставим первую страницу
-      setSearchValue(event.target.value)
+      setSearchValue(event.target.value);
 
       // fetchMovie();
       event.target.value = '';
@@ -117,12 +113,21 @@ export function Header() {
     }
 
   };
-
+console.log(typeSearch)
 
   // onChange={onChange}
   return (
     <div>
-      <input type="text"  onKeyPress={onEnter}/>
+      <input type="text" onKeyPress={onEnter}/>
+      <input type="radio" name="typeSearch" defaultChecked={true} id="typeMovie" value="movie"
+             onChange={event => setTypeSearch(event.target.value)}
+      />
+      <label htmlFor="typeMovie">Movie</label>
+      <input type="radio" name="typeSearch" id="typeTvShow" value="series"
+             onChange={event => setTypeSearch(event.target.value)}
+      />
+      <label htmlFor="typeTvShow">Tv show</label>
+
       <p>{loadingData.Loading}</p>
       <ul>
 
@@ -138,10 +143,10 @@ export function Header() {
         ))}
 
         <button onClick={() => {
-          setLoading({Loading: "Loading.."})
+          setLoading({ Loading: 'Loading..' });
 
           setSearchPage(searchPage + 1);
-          setCounter(counter +1)
+          setCounter(counter + 1);
           // fetchMovie();
         }}>next
         </button>
@@ -149,7 +154,7 @@ export function Header() {
 
       </ul>
 
-      <Info data={movie}/>
+      <Info data={movieInfo}/>
     </div>
 
   );
