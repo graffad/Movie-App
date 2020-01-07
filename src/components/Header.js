@@ -119,7 +119,7 @@ export function Header() {
             Search: newArr,
             totalResults: result.totalResults,
           });
-          setLoading({ Loading: '' });
+          setLoading({ Loading: `Total results of (${searchValue}): ${result.totalResults}` });
         } else {
           setStateJson({
             Search: [],
