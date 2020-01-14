@@ -12,6 +12,7 @@ module.exports = merge(commonConfig, {
     open: true,
     hot: true,
     publicPath: '/',
+    contentBase: './',
     historyApiFallback: true,
   },
   plugins: [
