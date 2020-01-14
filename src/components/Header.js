@@ -5,6 +5,8 @@ import {
   firstSearchAction,
   searchValAction,
   searchTypeAction,
+  searchError,
+  searchTotalResults,
 } from '../state-managment/actions';
 
 // apikey=5b0729fd
@@ -13,6 +15,7 @@ export function Header() {
   const garage = useSelector((state) => state);
   const [searchValue, setSearchValue] = useState('');
   const [searchType, setSearchType] = useState('Movie');
+
   // eslint-disable-next-line prefer-const
   let url = `http://www.omdbapi.com/?s=${searchValue}&type=${searchType}&apikey=5b0729fd&page=${garage.searchParams.searchPage}`;
 
@@ -22,7 +25,10 @@ export function Header() {
     fetch(url)
       .then((response) => response.json())
       .then((result) => {
-        dispatch(firstSearchAction(result));
+        if (result.Response === 'True') {
+          dispatch(firstSearchAction(result));
+          dispatch(searchTotalResults(`${result.totalResults} movies found`));
+        } else { dispatch(searchError(result.Error)); }
       });
     // eslint-disable-next-line prefer-const
     let searchValInput = document.getElementById('searchValue');

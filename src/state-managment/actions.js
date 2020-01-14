@@ -54,3 +54,16 @@ export function sortToNewAction() {
     type: 'SORT_TO_NEW',
   };
 }
+
+export function searchError(value) {
+  return {
+    type: 'SEARCH_ERROR',
+    payload: value,
+  };
+}
+export function searchTotalResults(value) {
+  return {
+    type: 'SEARCH_TOTAL_RESULTS',
+    payload: value,
+  };
+}

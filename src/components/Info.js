@@ -17,7 +17,10 @@ export function Info(props) {
         <div>
             <p>{data.Title}</p>
 
-            <button>hide</button>
+            <button onClick={() => {
+              // eslint-disable-next-line no-restricted-globals
+              history.back();
+            }}>hide</button>
         </div>
 
   );

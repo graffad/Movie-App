@@ -7,6 +7,7 @@ import {
   sortTitleAction,
   sortToNewAction,
   sortToOldAction,
+  searchError,
 } from '../state-managment/actions';
 
 export function Films() {
@@ -15,6 +16,7 @@ export function Films() {
   const [searchPage, setSearchPage] = useState(1);
   const [sortValue, setSortValue] = useState('Title');
   const [counter, setCounter] = useState(0);
+  const [preloader, setPreloader] = useState('');
 
   useEffect(() => {
 
@@ -23,14 +25,21 @@ export function Films() {
   console.log(garage.filmsReducer.data);
 
   function onNext() {
+    setPreloader('Loading...');
     setCounter(counter + 1);
-    setSearchPage(searchPage + 1);
     // eslint-disable-next-line prefer-const
     let url = `http://www.omdbapi.com/?s=${garage.searchParams.searchValue}&type=${garage.searchParams.searchType}&apikey=5b0729fd&page=${searchPage + 1}`;
     fetch(url)
       .then((response) => response.json())
       .then((result) => {
-        dispatch(nextSearchAction(result, sortValue));
+        if (result.Response === 'True') {
+          setSearchPage(searchPage + 1);
+          dispatch(nextSearchAction(result, sortValue));
+          setPreloader('');
+        } else {
+          dispatch(searchError(result.Error));
+          setPreloader('');
+        }
       });
   }
 
@@ -61,13 +70,15 @@ export function Films() {
         <option value="yearNewToOld">Year↓</option>
         <option value="yearOldToNew">Year↑</option>
       </select>
+      <p>{preloader}</p>
+      <h3>{garage.searchParams.status}</h3>
       <ul>
         {
           garage.filmsReducer.data.Search.map((item) => (
             <li key={item.imdbID}>{item.Title}{item.Year}
               <Link to={`/films/${item.imdbID}`}>
                 {/* <button onClick={() => fetchInfo(item.imdbID)}>more</button> */}
-                <button>more</button>
+                <button>Detail</button>
               </Link>
               <div>
                 {/* <img src={item.Poster} alt=""/> */}
@@ -76,7 +87,7 @@ export function Films() {
           ))
         }
       </ul>
-      <button onClick={onNext}>next</button>
+      <button onClick={onNext}>Show more</button>
     </div>
 
   );
