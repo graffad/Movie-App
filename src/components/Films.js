@@ -9,6 +9,7 @@ import {
   sortToOldAction,
   searchError,
 } from '../state-managment/actions';
+import noPoster from '../assets/no-poster.png';
 
 export function Films() {
   const dispatch = useDispatch();
@@ -83,7 +84,8 @@ export function Films() {
             <div className={'filmBlock'} key={item.imdbID}>
               <div className={'imgBlock'}>
                 <Link to={`/films/${item.imdbID}`}>
-                  <img src={item.Poster}alt=""/>
+                  {item.Poster === 'N/A' ? <img src={noPoster} alt=""/> : <img src={item.Poster} alt=""/> }
+                  {/* <img src={item.Poster} alt=""/> */}
                 </Link>
               </div>
               <Link to={`/films/${item.imdbID}`}><h4>{item.Title}</h4></Link>

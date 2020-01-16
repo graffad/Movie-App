@@ -27,7 +27,7 @@ export function Header() {
       .then((result) => {
         if (result.Response === 'True') {
           dispatch(firstSearchAction(result));
-          dispatch(searchTotalResults(`${result.totalResults} movies found`));
+          dispatch(searchTotalResults(`${result.totalResults} results found for "${searchValue}"`));
         } else { dispatch(searchError(result.Error)); }
       });
     // eslint-disable-next-line prefer-const
