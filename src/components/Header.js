@@ -36,23 +36,25 @@ export function Header() {
   }
 
   return (
-    <div>
-      <Link to='/'>HOME</Link>
-      <form action="">
-        <input type="text" id="searchValue"
+    <div className={'container'}>
+      <h2 className={'logo'}><Link to='/'>MOVIE APP</Link></h2>
+      <form action="" className={'formHeader'}>
+        <input type="text" id="searchValue" placeholder={'Enter text here'}
                onChange={(event) => setSearchValue(event.target.value)}/>
         <Link to='/films'>
-          <button onClick={onSubmit}>search</button>
+          <button className={'actionButton'} onClick={onSubmit}>Search</button>
         </Link>
 
-        <input type="radio" id='typeMovie' name='searchType' value='movie' defaultChecked={true}
-               onChange={(event) => setSearchType(event.target.value)}
-        />
-        <label htmlFor="typeMovie">Movie</label>
-        <input type="radio" id='typeSeries' name='searchType' value='series'
-               onChange={(event) => setSearchType(event.target.value)}
-        />
-        <label htmlFor="typeSeries">TV-Show</label>
+        <div className={'typeSearch'}>
+          <input type="radio" id='typeMovie' name='searchType' value='movie' defaultChecked={true}
+                  onChange={(event) => setSearchType(event.target.value)}
+          />
+          <label htmlFor="typeMovie">Movie</label>
+          <input type="radio" id='typeSeries' name='searchType' value='series'
+                 onChange={(event) => setSearchType(event.target.value)}
+          />
+          <label htmlFor="typeSeries">TV-Show</label>
+        </div>
       </form>
 
     </div>

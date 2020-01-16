@@ -1,5 +1,191 @@
+@font-face {
+    font-family: 'Protos';
+    src: url('./assets/fonts/Protos.woff') format('woff'),
+    url('./assets/fonts/Protos.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Exo 2', serif;
+    outline: transparent;
 }
+
+body {
+    background: #2d2c2f;
+}
+
+body::-webkit-scrollbar {
+    width: 15px;
+    background-color: dimgray;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: orange;
+
+}
+
+a {
+    text-decoration: none
+}
+
+p {
+    font-family: 'Exo 2', serif
+}
+
+#root {
+    width: 100%;
+    padding-top: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*border: 1px solid red;*/
+}
+
+.logo {
+    margin: 30px 0;
+    font-size: 50px;
+}
+
+.logo a {
+    color: orange;
+    text-shadow: 3px 5px 10px gray;
+    font-family: "Protos", serif;
+}
+
+#searchValue {
+    border: 2px solid orange;
+    padding: 5px;
+    margin-right: 10px;
+    font-size: 20px;
+    color: orange;
+    background: transparent;
+}
+
+.actionButton {
+    padding: 7px 10px;
+    font-size: 20px;
+    background: linear-gradient(135deg, rgba(73, 73, 73, 1) 0%, rgba(251, 157, 35, 1) 100%);
+    border: none;
+    box-shadow: 1px 1px 7px 0 orange;
+    cursor: pointer;
+    color: white;
+    text-shadow: 2px 2px 3px #2d2c2f;
+    transition: 1s;
+
+}
+
+.actionButton:hover {
+    box-shadow: 1px 5px 10px 0 orange;
+    transition: 1s;
+}
+
+.actionButton:active {
+    background: linear-gradient(315deg, rgba(73, 73, 73, 1) 0%, rgba(251, 157, 35, 1) 100%);
+
+}
+
+.formHeader input[type="radio"]:checked + label {
+    background: orange;
+    padding: 0 10px;
+    transition: 1s;
+    color: black;
+}
+
+.formHeader input[type="radio"] {
+    display: none;
+}
+
+.formHeader label {
+    cursor: pointer;
+    color: white;
+    transition: 1s;
+}
+
+.select {
+    margin: 20px 0;
+    /*align-self: flex-end;*/
+}
+
+.select select {
+    background: transparent;
+    border: none;
+    box-shadow: 0 0 2px 0px orange;
+    padding: 5px;
+    color: orange;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 0 2px black;
+}
+
+.select select option {
+    background: #2d2c2f;
+    color: orange;
+}
+
+.searchStatus {
+    color: orange;
+    margin-bottom: 20px;
+}
+
+.preloader {
+    color: orange;
+    position: fixed;
+}
+.filmsWrapper{
+    /*border: 1px solid yellow;*/
+    display: flex;
+    max-width: inherit;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.filmBlock {
+    max-width: 255px;
+    background: dimgray;
+    padding: 5px;
+    margin-bottom: 15px;
+    transition: 1s;
+}
+.filmBlock:hover {
+    box-shadow: 0 0 20px 2px white;
+    transition: 0.5s;
+
+}
+.filmBlock h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: 1s;
+    color: darkorange;
+    text-shadow: 2px 0 3px black;
+}
+.filmBlock p {
+    color: white;
+    text-shadow: 2px 2px 5px black;
+}
+.filmBlock h4:hover {
+    white-space: normal;
+    transition: 0.5s;
+    font-size: 1.1em;
+}
+.imgBlock{
+    max-width: 255px;
+    height: 400px;
+}
+.imgBlock img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
 

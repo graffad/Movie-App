@@ -53,41 +53,49 @@ export function Films() {
 
 
   return (
-    <div>
-      <select name="" id="" onChange={(event) => {
-        setSortValue(event.target.value);
-        if (event.target.value === 'Title') {
-          dispatch(sortTitleAction());
-        } else if (event.target.value === 'yearNewToOld') {
-          dispatch(sortToOldAction());
-        } else if (event.target.value === 'yearOldToNew') {
-          dispatch(sortToNewAction());
+    <div className={'container'}>
+
+      <div className={'select'}>
+        <select name="" id="selectSort" onChange={(event) => {
+          setSortValue(event.target.value);
+          if (event.target.value === 'Title') {
+            dispatch(sortTitleAction());
+          } else if (event.target.value === 'yearNewToOld') {
+            dispatch(sortToOldAction());
+          } else if (event.target.value === 'yearOldToNew') {
+            dispatch(sortToNewAction());
+          }
+          setCounter(counter + 1);
         }
-        setCounter(counter + 1);
-      }
-      }>
-        <option defaultValue="Title">Title</option>
-        <option value="yearNewToOld">Year↓</option>
-        <option value="yearOldToNew">Year↑</option>
-      </select>
-      <p>{preloader}</p>
-      <h3>{garage.searchParams.status}</h3>
-      <ul>
+        }>
+          <option selected={true} disabled={true}>Chose sorting</option>
+          <option value="Title">Title</option>
+          <option value="yearNewToOld">Year↓</option>
+          <option value="yearOldToNew">Year↑</option>
+        </select>
+      </div>
+
+      <p className={'preloader'}>{preloader}</p>
+      <h3 className={'searchStatus'}>{garage.searchParams.status}</h3>
+      <div className={'filmsWrapper'}>
         {
           garage.filmsReducer.data.Search.map((item) => (
-            <li key={item.imdbID}>{item.Title}{item.Year}
-              <Link to={`/films/${item.imdbID}`}>
-                {/* <button onClick={() => fetchInfo(item.imdbID)}>more</button> */}
-                <button>Detail</button>
-              </Link>
-              <div>
-                {/* <img src={item.Poster} alt=""/> */}
+            <div className={'filmBlock'} key={item.imdbID}>
+              <div className={'imgBlock'}>
+                <Link to={`/films/${item.imdbID}`}>
+                  <img src={item.Poster}alt=""/>
+                </Link>
               </div>
-            </li>
+              <Link to={`/films/${item.imdbID}`}><h4>{item.Title}</h4></Link>
+              <div className={'shortFilmInfo'}>
+                <p>Year: {item.Year}</p>
+                <p>Type: {item.Type}</p>
+              </div>
+            </div>
           ))
         }
-      </ul>
-      <button onClick={onNext}>Show more</button>
+      </div>
+      <button className={'actionButton'} onClick={onNext}>Show more</button>
     </div>
 
   );
