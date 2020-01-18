@@ -10,16 +10,18 @@ import {
 } from '../state-managment/actions';
 
 // apikey=5b0729fd
-export function Header() {
+export function Header(props) {
   const dispatch = useDispatch();
   const garage = useSelector((state) => state);
   const [searchValue, setSearchValue] = useState('');
   const [searchType, setSearchType] = useState('Movie');
-
+  // const [preloder,setPreloader] = useState('')
   // eslint-disable-next-line prefer-const
   let url = `http://www.omdbapi.com/?s=${searchValue}&type=${searchType}&apikey=5b0729fd&page=${garage.searchParams.searchPage}`;
 
-  function onSubmit() {
+  function onSubmit(event) {
+    // event.preventDefault();
+    // setPreloader('Loading...');
     dispatch(searchValAction(searchValue));
     dispatch(searchTypeAction(searchType));
     fetch(url)
@@ -28,7 +30,13 @@ export function Header() {
         if (result.Response === 'True') {
           dispatch(firstSearchAction(result));
           dispatch(searchTotalResults(`${result.totalResults} results found for "${searchValue}"`));
-        } else { dispatch(searchError(result.Error)); }
+          // setPreloader('');
+          // props.history.push('/films');
+          // console.log(props);
+        } else {
+          dispatch(searchError(result.Error));
+          // setPreloader(`${result.Error}`);
+        }
       });
     // eslint-disable-next-line prefer-const
     let searchValInput = document.getElementById('searchValue');
@@ -41,9 +49,11 @@ export function Header() {
       <form action="" className={'formHeader'}>
         <input type="text" id="searchValue" placeholder={'Enter text here'}
                onChange={(event) => setSearchValue(event.target.value)}/>
-        <Link to='/films'>
+
+        <Link to={'/films'}>
           <button className={'actionButton'} onClick={onSubmit}>Search</button>
         </Link>
+
 
         <div className={'typeSearch'}>
           <input type="radio" id='typeMovie' name='searchType' value='movie' defaultChecked={true}
@@ -56,7 +66,7 @@ export function Header() {
           <label htmlFor="typeSeries">TV-Show</label>
         </div>
       </form>
-
+      {/* <h3 className={'searchStatus'}>{preloder}</h3> */}
     </div>
   );
 }
