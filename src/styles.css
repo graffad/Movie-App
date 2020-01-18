@@ -86,9 +86,10 @@ p {
     color: white;
     text-shadow: 2px 2px 3px #2d2c2f;
     transition: 1s;
-
 }
-
+.nextButton{
+    margin-bottom: 40px;
+}
 .actionButton:hover {
     box-shadow: 1px 5px 10px 0 orange;
     transition: 1s;
@@ -124,7 +125,7 @@ p {
 .select select {
     background: transparent;
     border: none;
-    box-shadow: 0 0 2px 0px orange;
+    box-shadow: 0 0 2px 0 orange;
     padding: 5px;
     color: orange;
     font-weight: bold;
@@ -201,16 +202,21 @@ p {
     height: 100%;
     object-fit: cover;
 }
-.modalWrapper{
-position: fixed;
-    top:50%;
+
+.modalWrapper {
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
+    min-width: 255px;
+    width: 100%;
+    max-width: 1000px;
 }
+
 .modalInfoWrapper {
     color: white;
     background: dimgray;
-    max-width: 1000px;
+    /*max-width: 1000px;*/
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -220,26 +226,32 @@ position: fixed;
     box-shadow: 0 0 10px 2px orange;
     text-shadow: 2px 2px 5px black;
 }
-.modalImg{
+
+.modalImg {
     max-width: 255px;
     height: 400px;
     background: red;
 }
+
 .modalImg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.modalInfo{
+
+.modalText {
     max-width: 50%;
 }
-.modalInfo li{
+
+.modalText li {
     margin-bottom: 5px;
 }
-.modalInfo li span {
+
+.modalText li span {
     color: orange;
     font-weight: bold;
 }
+
 .modalInfoWrapper button {
     position: absolute;
     right: 0;
@@ -251,9 +263,11 @@ position: fixed;
     border: none;
     cursor: pointer;
 }
+
 .modalInfoWrapper button:hover {
     opacity: 1;
 }
+
 .modalInfoWrapper button:before, .modalInfoWrapper button:after {
     position: absolute;
     content: ' ';
@@ -262,25 +276,86 @@ position: fixed;
     width: 3px;
     background-color: white;
 }
+
 .modalInfoWrapper button:before {
     transform: rotate(45deg);
 }
+
 .modalInfoWrapper button:after {
     transform: rotate(-45deg);
 }
+
 .notFound {
     margin-top: 100px;
 }
+
 .notFound a {
     color: white;
     border: 1px solid white;
     padding: 5px 10px;
 
 }
+
 .notFound h1 {
     font-size: 60px;
     font-family: Protos, serif;
     margin-top: 20px;
     color: orange;
     text-shadow: 2px 2px 10px gray;
+}
+
+@media screen and (max-width: 534px) {
+
+    .modalWrapper {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: auto;
+        transform: none;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding: 0 15px;
+    }
+
+    .modalText {
+        max-width: none;
+        padding: 0 20px;
+
+    }
+
+    .modalWrapper::-webkit-scrollbar {
+        width: 5px;
+        background-color: dimgray;
+    }
+
+    .modalWrapper::-webkit-scrollbar-thumb {
+        background-color: orange;
+    }
+}
+
+@media screen and (max-height: 400px) {
+
+    .modalWrapper {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: auto;
+        transform: none;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .modalText {
+        max-width: none;
+        padding: 0 20px;
+    }
+
+    .modalWrapper::-webkit-scrollbar {
+        width: 5px;
+        background-color: dimgray;
+    }
+
+    .modalWrapper::-webkit-scrollbar-thumb {
+        background-color: orange;
+    }
 }

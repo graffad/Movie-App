@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import noPoster from '../assets/no-poster.png';
 import { Link } from 'react-router-dom';
+import noPoster from '../assets/no-poster.png';
 import { Films } from './Films';
 
 export function Info(props) {
   const [data, setData] = useState({});
-  const [preloader, setPreloader] = useState('')
+  const [preloader, setPreloader] = useState('');
   useEffect(() => {
     setPreloader('Loading');
     // eslint-disable-next-line react/prop-types
     fetch(`http://www.omdbapi.com/?i=${props.match.params.id}&apikey=5b0729fd&plot=full`)
       .then((response) => response.json())
       .then((result) => {
-        setData(result);
-        setPreloader('');
+        if (result.Response === 'True') {
+          setData(result);
+          setPreloader('');
+        } else { props.history.push('/not-found'); }
       });
     // eslint-disable-next-line react/prop-types
   }, [props.match.params.id]);
@@ -30,7 +32,7 @@ export function Info(props) {
               {data.Poster === 'N/A' ? <img src={noPoster} alt=""/>
                 : <img src={data.Poster} alt=""/>}
             </div>
-            <div className={'modalInfo'}>
+            <div className={'modalText'}>
               <ul>
                 <li><h3>{data.Title}</h3></li>
                 <li><span>Year:</span> {data.Year}</li>

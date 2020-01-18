@@ -101,7 +101,7 @@ export function Films() {
             ))
           }
         </div>
-        <button className={'actionButton'} onClick={onNext}>Show more</button>
+        <button className={'actionButton  nextButton'} onClick={onNext}>Show more</button>
       </div>
     </div>
 
