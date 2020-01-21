@@ -22,14 +22,12 @@ export default function filmsReducer(state = initialState, action) {
           });
       } else if (action.sortBy === 'yearNewToOld') {
         arrNum = action.payload.Search.map((item) => {
-          // eslint-disable-next-line no-param-reassign
           item.Year = parseInt(item.Year, 10);
           return item;
         });
         arrSorted = arrNum.sort((prev, next) => next.Year - prev.Year);
       } else if (action.sortBy === 'yearOldToNew') {
         arrNum = action.payload.Search.map((item) => {
-          // eslint-disable-next-line no-param-reassign
           item.Year = parseInt(item.Year, 10);
           return item;
         });
@@ -61,7 +59,6 @@ export default function filmsReducer(state = initialState, action) {
 
     case 'SORT_TO_OLD': {
       arrNum = state.data.Search.map((item) => {
-        // eslint-disable-next-line no-param-reassign
         item.Year = parseInt(item.Year, 10);
         return item;
       });
@@ -78,7 +75,6 @@ export default function filmsReducer(state = initialState, action) {
 
     case 'SORT_TO_NEW': {
       arrNum = state.data.Search.map((item) => {
-        // eslint-disable-next-line no-param-reassign
         item.Year = parseInt(item.Year, 10);
         return item;
       });

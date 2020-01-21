@@ -1,7 +1,6 @@
 const initialState = {
   searchValue: '',
   searchType: '',
-  searchPage: 1,
   status: '',
 };
 export default function searchParams(state = initialState, action) {
@@ -15,11 +14,6 @@ export default function searchParams(state = initialState, action) {
       return {
         ...state,
         searchType: action.payload,
-      };
-    case 'SEARCH_PAGE':
-      return {
-        ...state,
-        searchPage: action.payload,
       };
     case 'SEARCH_ERROR':
       return {

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export function NotFound(props) {
+export default function NotFound(props) {
   function relocate() {
-    // eslint-disable-next-line react/prop-types
     return props.history.push('/');
   }
 

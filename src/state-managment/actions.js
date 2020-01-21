@@ -26,18 +26,12 @@ export function searchTypeAction(value) {
   };
 }
 
-export function searchPageAction(value) {
-  return {
-    type: 'SEARCH_PAGE',
-    payload: value,
-  };
-}
-export function filmInfoAction(data) {
-  return {
-    type: 'FILM_INFO',
-    payload: data,
-  };
-}
+// export function filmInfoAction(data) {
+//   return {
+//     type: 'FILM_INFO',
+//     payload: data,
+//   };
+// }
 
 export function sortTitleAction() {
   return {

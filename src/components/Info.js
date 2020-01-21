@@ -1,28 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import noPoster from '../assets/no-poster.png';
-import { Films } from './Films';
+import Films from './Films';
 
-export function Info(props) {
+export default function Info(props) {
   const [data, setData] = useState({});
   const [preloader, setPreloader] = useState('');
+  if (!localStorage.hasOwnProperty('watchedFilms')) {
+    localStorage.setItem('watchedFilms', JSON.stringify([]));
+  }
+
   useEffect(() => {
     setPreloader('Loading');
-    // eslint-disable-next-line react/prop-types
-    fetch(`http://www.omdbapi.com/?i=${props.match.params.id}&apikey=5b0729fd&plot=full`)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.Response === 'True') {
-          setData(result);
-          setPreloader('');
-        } else { props.history.push('/not-found'); }
-      });
-    // eslint-disable-next-line react/prop-types
+    const localFilmsArr = JSON.parse(localStorage.getItem('watchedFilms'));
+    const filmId = props.match.params.id;
+    const filtered = localFilmsArr.filter((item) => item[filmId]);
+    if (filtered.length !== 0) {
+      setData(filtered[0][filmId]);
+      setPreloader('');
+    } else {
+      fetch(`http://www.omdbapi.com/?i=${props.match.params.id}&apikey=5b0729fd&plot=full`)
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.Response === 'True') {
+            setData(result);
+            setPreloader('');
+            localFilmsArr.push({ [`${props.match.params.id}`]: result });
+            localStorage.setItem('watchedFilms', JSON.stringify(localFilmsArr));
+          } else { props.history.push('/not-found'); }
+        });
+    }
   }, [props.match.params.id]);
 
 
   return (
-    <div>
+    <>
       <Films/>
       <div className={'container'}>
         <div className={'modalWrapper'}>
@@ -53,7 +65,7 @@ export function Info(props) {
           </div>
         </div>
       </div>
-    </div>
+    </>
 
   );
 }

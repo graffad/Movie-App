@@ -1,7 +1,6 @@
 const merge = require('webpack-merge');
-const commonConfig = require('./webpack.config');
-
 const { HotModuleReplacementPlugin } = require('webpack');
+const commonConfig = require('./webpack.config');
 
 
 module.exports = merge(commonConfig, {
@@ -16,6 +15,6 @@ module.exports = merge(commonConfig, {
     historyApiFallback: true,
   },
   plugins: [
-    new HotModuleReplacementPlugin()
-  ]
+    new HotModuleReplacementPlugin(),
+  ],
 });

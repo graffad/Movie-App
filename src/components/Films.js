@@ -3,34 +3,44 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   nextSearchAction,
-  filmInfoAction,
+  // filmInfoAction,
   sortTitleAction,
   sortToNewAction,
   sortToOldAction,
   searchError,
 } from '../state-managment/actions';
 import noPoster from '../assets/no-poster.png';
-import { Header } from './Header';
+import Header from './Header';
 
-export function Films() {
+export default function Films(props) {
   const dispatch = useDispatch();
   const garage = useSelector((state) => state);
   const [searchPage, setSearchPage] = useState(1);
   const [sortValue, setSortValue] = useState('Title');
-  const [counter, setCounter] = useState(0);
   const [preloader, setPreloader] = useState('');
-
+  const [filmsBlocksOnPage, setFilmsBlocksOnPage] = useState(0);
   useEffect(() => {
-
-  }, [counter]);
-
-  console.log(garage.filmsReducer.data);
+    const hidden = document.getElementsByClassName('show');
+    const currentFilmsBlocks = document.getElementsByClassName('filmBlock');
+    setFilmsBlocksOnPage(currentFilmsBlocks.length);
+    if (garage.searchParams.status === 'Movie not found!' || garage.searchParams.status === ''
+      || garage.searchParams.status === 'Something went wrong.'
+      || garage.searchParams.status === 'Too many results.') {
+      Array.from(hidden)
+        .forEach((item) => {
+          item.style.display = 'none';
+        });
+    } else {
+      Array.from(hidden)
+        .forEach((item) => {
+          item.style.display = 'flex';
+        });
+    }
+  }, [garage.searchParams.status]);
 
   function onNext() {
     setPreloader('Loading...');
-    setCounter(counter + 1);
-    // eslint-disable-next-line prefer-const
-    let url = `http://www.omdbapi.com/?s=${garage.searchParams.searchValue}&type=${garage.searchParams.searchType}&apikey=5b0729fd&page=${searchPage + 1}`;
+    const url = `http://www.omdbapi.com/?s=${garage.searchParams.searchValue}&type=${garage.searchParams.searchType}&apikey=5b0729fd&page=${searchPage + 1}`;
     fetch(url)
       .then((response) => response.json())
       .then((result) => {
@@ -39,7 +49,11 @@ export function Films() {
           dispatch(nextSearchAction(result, sortValue));
           setPreloader('');
         } else {
-          dispatch(searchError(result.Error));
+          if (filmsBlocksOnPage !== garage.filmsReducer.data.totalResults) {
+            dispatch(searchError('No more pages'));
+          } else {
+            dispatch(searchError(result.Error));
+          }
           setPreloader('');
         }
       });
@@ -56,11 +70,12 @@ export function Films() {
 
   return (
     <div>
-      <Header/>
+      <Header newpr={props}/>
       <div className={'container'}>
-
-        <div className={'select'}>
-          <select name="" id="selectSort" onChange={(event) => {
+        <p className={'preloader'}>{preloader}</p>
+        <h3 className={'searchStatus'} id={'searchStatus'}>{garage.searchParams.status}</h3>
+        <div className={'select show'} id={'selector'}>
+          <select defaultValue={'Chose sorting'} name="" id="selectSort" onChange={(event) => {
             setSortValue(event.target.value);
             if (event.target.value === 'Title') {
               dispatch(sortTitleAction());
@@ -69,19 +84,15 @@ export function Films() {
             } else if (event.target.value === 'yearOldToNew') {
               dispatch(sortToNewAction());
             }
-            setCounter(counter + 1);
           }
           }>
-            <option selected={true} disabled={true}>Chose sorting</option>
+            <option value={'Chose sorting'} disabled={true}>Chose sorting</option>
             <option value="Title">Title</option>
             <option value="yearNewToOld">Year↓</option>
             <option value="yearOldToNew">Year↑</option>
           </select>
         </div>
-
-        <p className={'preloader'}>{preloader}</p>
-        <h3 className={'searchStatus'}>{garage.searchParams.status}</h3>
-        <div className={'filmsWrapper'}>
+        <div className={'filmsWrapper show'}>
           {
             garage.filmsReducer.data.Search.map((item) => (
               <div className={'filmBlock'} key={item.imdbID}>
@@ -89,7 +100,6 @@ export function Films() {
                   <Link to={`/films/${item.imdbID}`}>
                     {item.Poster === 'N/A' ? <img src={noPoster} alt=""/>
                       : <img src={item.Poster} alt=""/>}
-                    {/* <img src={item.Poster} alt=""/> */}
                   </Link>
                 </div>
                 <Link to={`/films/${item.imdbID}`}><h4>{item.Title}</h4></Link>
@@ -101,7 +111,7 @@ export function Films() {
             ))
           }
         </div>
-        <button className={'actionButton  nextButton'} onClick={onNext}>Show more</button>
+        <button className={'actionButton  nextButton show'} onClick={onNext}>Show more</button>
       </div>
     </div>
 

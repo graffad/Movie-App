@@ -7,7 +7,7 @@ module.exports = {
   output: {
     filename: 'main.bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -23,15 +23,15 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          'less-loader'
-        ]
+          'less-loader',
+        ],
       },
       {
         test: /\.css$/,
         use: [
           'style-loader',
           'css-loader',
-        ]
+        ],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -46,18 +46,18 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2)$/i,
-        use: ['file-loader']
-      }
-    ]
+        use: ['file-loader'],
+      },
+    ],
   },
   plugins: [
     new HTMLWebpackPlugin({
       title: 'My webpack super useful page',
       template: './src/index.html',
       templateParameters: {
-        title: 'Hello world'
-      }
+        title: 'Hello world',
+      },
     }),
     new CleanWebpackPlugin(),
-  ]
+  ],
 };
