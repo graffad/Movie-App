@@ -29,7 +29,8 @@ body::-webkit-scrollbar-thumb {
 }
 
 a {
-    text-decoration: none
+    text-decoration: none;
+    color: inherit;
 }
 
 ul {
@@ -87,9 +88,11 @@ p {
     text-shadow: 2px 2px 3px #2d2c2f;
     transition: 1s;
 }
-.nextButton{
+
+.nextButton {
     margin-bottom: 40px;
 }
+
 .actionButton:hover {
     box-shadow: 1px 5px 10px 0 orange;
     transition: 1s;
@@ -172,6 +175,42 @@ p {
 
 }
 
+.tooltip {
+    position: relative;
+}
+
+.tooltip span {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(255,140,0,0.85);
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+    position: absolute;
+    z-index: 1;
+    text-shadow: 2px 2px 5px black;
+    box-shadow: 0 0 5px 2px white;
+}
+
+.tooltip span::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(255,140,0,0.85) transparent transparent transparent;
+}
+
+.tooltip:hover span {
+    visibility: visible;
+}
+
 .filmBlock h4 {
     white-space: nowrap;
     overflow: hidden;
@@ -186,11 +225,11 @@ p {
     text-shadow: 2px 2px 5px black;
 }
 
-.filmBlock h4:hover {
-    white-space: normal;
-    transition: 0.5s;
-    font-size: 1.1em;
-}
+/*.filmBlock h4:hover {*/
+/*    white-space: normal;*/
+/*    transition: 0.5s;*/
+/*    font-size: 1.1em;*/
+/*}*/
 
 .imgBlock {
     max-width: 255px;

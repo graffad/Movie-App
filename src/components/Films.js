@@ -25,7 +25,8 @@ export default function Films(props) {
     setFilmsBlocksOnPage(currentFilmsBlocks.length);
     if (garage.searchParams.status === 'Movie not found!' || garage.searchParams.status === ''
       || garage.searchParams.status === 'Something went wrong.'
-      || garage.searchParams.status === 'Too many results.') {
+      || garage.searchParams.status === 'Too many results.'
+      || garage.searchParams.status === 'Series not found!') {
       Array.from(hidden)
         .forEach((item) => {
           item.style.display = 'none';
@@ -102,7 +103,10 @@ export default function Films(props) {
                       : <img src={item.Poster} alt=""/>}
                   </Link>
                 </div>
-                <Link to={`/films/${item.imdbID}`}><h4>{item.Title}</h4></Link>
+                <div className={'tooltip'}>
+                  <h4><Link to={`/films/${item.imdbID}`}>{item.Title}</Link></h4>
+                  <span>{item.Title}</span>
+                </div>
                 <div className={'shortFilmInfo'}>
                   <p>Year: {item.Year}</p>
                   <p>Type: {item.Type}</p>
