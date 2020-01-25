@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import history from '../state-managment/history';
 
-export default function NotFound(props) {
+export default function NotFound() {
   function relocate() {
-    return props.history.push('/');
+    return history.push('/');
   }
 
   setTimeout(relocate, 5000);

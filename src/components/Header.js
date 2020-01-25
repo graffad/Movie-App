@@ -8,15 +8,15 @@ import {
   searchError,
   searchTotalResults,
 } from '../state-managment/actions';
+import history from '../state-managment/history';
 
 // apikey=5b0729fd
-export default function Header(props) {
+export default function Header() {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
   const [searchType, setSearchType] = useState('Movie');
   const [preloader, setPreloader] = useState('');
   const url = `http://www.omdbapi.com/?s=${searchValue}&type=${searchType}&apikey=5b0729fd&page=1`;
-
   function onSubmit(event) {
     const searchValInput = document.getElementById('searchValue');
     event.preventDefault();
@@ -31,15 +31,18 @@ export default function Header(props) {
             dispatch(firstSearchAction(result));
             dispatch(searchTotalResults(`${result.totalResults} results found for "${searchValue}"`));
             setPreloader('');
-            if (!props.hasOwnProperty('newpr')) {
-              props.history.push('/films');
-            }
+            // if (!props.hasOwnProperty('newpr')) {
+            history.push('/films');
+            // }
           } else {
             dispatch(searchError(result.Error));
-            setPreloader('');
-            if (!props.hasOwnProperty('newpr')) {
+            if (history.location.pathname === '/' || history.location.pathname === '/history') {
               setPreloader(`${result.Error}`);
+            } else {
+              setPreloader('');
             }
+            // if (!props.hasOwnProperty('newpr')) {
+            // }
           }
         });
       searchValInput.value = '';
@@ -49,6 +52,8 @@ export default function Header(props) {
   return (
     <div className={'container'}>
       <h2 className={'logo'}><Link to='/'>MOVIE APP</Link></h2>
+      <div className={'historyBtn'}><Link to={'/history'}>History</Link></div>
+
       <form action="" className={'formHeader'}>
         <input type="text" id="searchValue" placeholder={'Enter text here'}
                onChange={(event) => setSearchValue(event.target.value.trim())}/>
